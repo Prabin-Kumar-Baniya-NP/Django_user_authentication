@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User profile</title>
+</head>
+<body>
+<h1>Welcome {{ user_name }}</h1>
+{% if messages %}
+{% for message in messages %}
+    <small{% if message.tags %} class = "{{ message.tags }}" {% endif %}> {{ message }}</small>
+    {% endfor %}
+{% endif %}
+<hr>
+{% if users != None %}
+ {% for user in users %}
+   <a href="{% url 'user_detail' user.id %}">{{ user.username }}</a> <br> <br>
+    {% endfor %}
+{%   endif %}
+<hr>
+<a href="{% url 'logout' %}">Logout</a>
+<a href="{% url 'change_password' %}">Change Password</a>
+<hr>
+<hr>
+{% if perms.myapp.add_blog %}
+<input type="button" value="Add"><br>
+{% endif %}
+{% if perms.myapp.change_blog %}
+<input type="button" value="Change"><br>
+{% endif %}
+{% if perms.myapp.delete_blog %}
+<input type="button" value="Delete"><br>
+{% endif %}
+{% if perms.myapp.view_blog %}
+<input type="button" value="View"><br>
+{% endif %}
+<hr>
+ <form action="" method="POST">
+        {% csrf_token %}
+       {% for fm in form%}
+        {{ fm.label_tag }} {{fm}} {{ fm.errors|striptags }} <br><br>
+       {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
